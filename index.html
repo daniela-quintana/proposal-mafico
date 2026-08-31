@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Máfico — Web Development Proposal</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#171717;
+    --muted:#68645e;
+    --accent:#ff2018;
+    --line:#c9c5bd;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    /* width:min(210mm,100%); */
+    min-height:297mm;
+    margin:0 auto;
+    padding:22mm 16mm 18mm;
+    position:relative;
+    break-after:page;
+    overflow:hidden;
+  }
+  .page::before{
+    content:"";
+    position:absolute;
+    left:16mm;right:16mm;top:13mm;
+    /* border-top:1px solid var(--line); */
+  }
+  .topbar{
+    position:absolute;
+    top:8mm;left:16mm;right:16mm;
+    display:flex;justify-content:space-between;
+    font:9px/1 "Courier New",monospace;
+    letter-spacing:.12em;
+    color:var(--muted);
+  }
+  .footer{
+    position:absolute;
+    bottom:8mm;left:16mm;right:16mm;
+    padding-top:4mm;
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;
+    font:8px/1 "Courier New",monospace;
+    color:var(--muted);
+  }
+  .kicker,.num,.mono{
+    font-family:"Courier New",monospace;
+    letter-spacing:.12em;
+  }
+  .kicker{font-size:12px}
+  .num{font-size:12px;color:var(--accent)}
+  h1,h2,h3,p{margin-top:0}
+  h1{
+    font-size:clamp(44px,7vw,70px);
+    line-height:.88;
+    letter-spacing:-.055em;
+    margin:7mm 0 12mm;
+    text-transform: uppercase;
+  }
+  h2{
+    font-size:clamp(34px,5vw,48px);
+    line-height:.94;
+    letter-spacing:-.045em;
+    margin:4mm 0 8mm;
+  }
+  h3{
+    font-size:16px;
+    margin:0 0 6px;
+    letter-spacing:-.02em;
+  }
+
+   section {
+    /* height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem; */
+    opacity: 0;
+    transform: translateY(150px);
+    transition: all 2s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* section:nth-child(1) { background: #ff6b6b; }
+  section:nth-child(2) { background: #4ecdc4; }
+  section:nth-child(3) { background: #45b7d1; }
+  section:nth-child(4) { background: #f9ca24; } */
+
+  .lead{display: flex;
+    font-size: 12px;
+    /* line-height: 1.45; */
+    max-width: 150mm;
+    flex-direction: column;}
+  .body{font-size:10px;line-height:1.55}
+  .small{font-size:10px;line-height:1.45;color:var(--muted)}
+  .cover{padding-top: 250px}
+  .cover .rule{
+    border-top:1px solid var(--ink);
+    padding-top:5mm;
+    display:flex;justify-content:space-between;
+    font:10px "Courier New",monospace;
+  }
+  .cover-bottom{
+    display: flex;
+    position: absolute;
+    /* left: 17mm; */
+    /* right: 16mm; */
+    bottom: 0mm;
+    margin: 4mm 0 8mm;
+    flex-direction: column;
+  }
+  .stack{
+    margin-top:8mm;
+    font:10px "Courier New",monospace;
+    letter-spacing:.06em;
+  }
+  .grid{
+    margin-top:20mm;
+    border-top:1px solid var(--line);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:18mm 42mm 1fr;
+    min-height:27mm;
+    border-bottom:1px solid var(--line);
+    align-items:center;
+    gap:5mm;
+  }
+  .row .title{font-weight:700;font-size:15px}
+  .row p{margin:0}
+  .scope{margin-top:10mm}
+  .scope .item{
+    display:grid;
+    grid-template-columns:18mm 48mm 1fr;
+    gap:4mm;
+    padding:5mm 0;
+    border-top:1px solid var(--line);
+  }
+  .scope .item:last-child{border-bottom:1px solid var(--line)}
+  .scope .title{font-weight:700;font-size:14px}
+  .checks{
+    margin-top:6mm;
+    border-top:1px solid var(--line);
+  }
+  .check{
+    display:grid;
+    grid-template-columns:12mm 1fr;
+    min-height:16mm;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .checkmark{color:var(--accent);font:bold 14px "Courier New",monospace}
+  .material{
+    margin-top:9mm;
+    border:1px solid var(--ink);
+    padding:6mm;
+  }
+  .material .mono{font-size:10px}
+  .process{
+    margin-top:8mm;
+    border-top:1px solid var(--line);
+  }
+  .process .pitem{
+    display:grid;
+    grid-template-columns:18mm 38mm 1fr;
+    min-height:28mm;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+    gap:4mm;
+  }
+  .budget{
+    margin-top:6mm;
+    width:100%;
+    border-collapse:collapse;
+  }
+  .budget th{
+    background:var(--ink);color:white;
+    text-align:left;
+    padding:4mm;
+    font:8px "Courier New",monospace;
+    letter-spacing:.1em;
+  }
+  .budget td{
+    padding:4mm;
+    border:1px solid var(--line);
+    font-size:9px;
+  }
+  .budget td:last-child{text-align:right;font-weight:700}
+  .totals{margin-top:7mm;margin-left:auto;width:100%}
+  .totals .total-row{
+    display:flex;justify-content:space-between;
+    border-top:1px solid var(--ink);
+    padding:4mm 0;
+    font-family:"Courier New",monospace;
+    font-size:10px;
+  }
+  .totals .grand{font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700}
+  .terms{
+    margin-top:5mm;
+    border-top:1px solid var(--line);
+  }
+  .term{
+    display:grid;
+    grid-template-columns:35mm 1fr;
+    gap:5mm;
+    padding:5mm 0;
+    border-bottom:1px solid var(--line);
+  }
+  .term .label{font:10px "Courier New",monospace}
+  .closing{
+    margin-top:18mm;
+  }
+  .closing h2{font-size:48px;margin-bottom:4mm}
+  .orange{color:var(--accent)}
+  @media print{
+    body{background:var(--bg)}
+    .page{margin:0;width:210mm;height:297mm}
+  }
+  @media(max-width:700px){
+    .page{
+        display: flex;
+        padding: 0mm 7vw 18mm;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        }
+    .page::before{left:7vw;right:7vw}
+    .topbar,.footer{
+        left: 7vw;
+        right: 7vw;
+        position: absolute;
+        }
+    .row,.scope .item,.process .pitem{grid-template-columns:40mm 1fr}
+    .row > :last-child,.scope .item > :last-child,.process .pitem > :last-child{grid-column:2}
+    .check{grid-template-columns:40mm 1fr}
+  }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span></div>
+  <div class="kicker">01 / PROPOSAL</div>
+  <h1>MÁFICO<br>Web Development<br>Proposal</h1>
+  <div class="rule">
+    <span>DESARROLLO + CMS + MOTION</span>
+    <span>DANIELA QUINTANA</span>
+  </div>
+  <div class="cover-bottom">
+    <p class="lead"><b>Propuesta de desarrollo e implementación web</b> para la nueva etapa digital de Máfico.</p>
+    <p class="body">Basada en el alcance técnico definido a partir de la propuesta original.</p>
+    <div class="stack">CMS&nbsp; / &nbsp;GSAP&nbsp; / &nbsp;SCROLLTRIGGER&nbsp; / &nbsp;ECOMMERCE</div>
+  </div>
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span><span>02</span></div> -->
+  <div class="num">02 / OVERVIEW</div>
+  <h2>Un sitio pensado para<br>contar una historia.</h2>
+  <p class="lead">El objetivo del desarrollo es transformar la propuesta visual y narrativa de Máfico en una experiencia web funcional, responsive y administrable.</p>
+  <p class="body">El sitio considera; CMS, GSAP y ScrollTrigger para las animaciones e interacciones asociadas al scrollytelling.</p>
+
+  <div class="grid">
+    <div class="row"><span class="num">01</span><span class="title">DESARROLLO</span><p class="body">Construcción de las secciones y componentes definidos para el sitio.</p></div>
+    <div class="row"><span class="num">02</span><span class="title">MOTION</span><p class="body">Animaciones, transiciones e interacciones vinculadas al scroll.</p></div>
+    <div class="row"><span class="num">03</span><span class="title">CMS</span><p class="body">Configuración para administrar los contenidos del sitio.</p></div>
+    <div class="row"><span class="num">04</span><span class="title">LAUNCH</span><p class="body">Testing, publicación, puesta en producción y capacitación.</p></div>
+  </div>
+
+  <!-- <div style="margin-top:12mm">
+    <div class="num">STACK</div>
+    <h3 style="margin-top:4mm"> CMS / GSAP / ScrollTrigger / Responsive HTML-CSS-JS</h3>
+  </div> -->
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span><span>03</span></div> -->
+  <div class="num">03 / SCOPE OF WORK</div>
+  <h2>Qué se desarrolla</h2>
+  <div class="scope">
+    <div class="item"><span class="num">01</span><span class="title">Website Development</span><p class="body">Estructuración y programación del sitio, sus secciones y componentes a partir del diseño visual y contenidos finales entregados.</p></div>
+    <div class="item"><span class="num">02</span><span class="title">Responsive Development</span><p class="body">Adaptación de la experiencia para desktop, tablet y mobile, incluyendo comportamiento de componentes y animaciones.</p></div>
+    <div class="item"><span class="num">03</span><span class="title">Scrollytelling & Motion</span><p class="body">Implementación de animaciones con GSAP y ScrollTrigger, transiciones y efectos definidos para la experiencia de navegación.</p></div>
+    <div class="item"><span class="num">04</span><span class="title">CMS</span><p class="body">Configuración del panel, estructuras de contenido y campos administrables para que Máfico pueda gestionar el contenido.</p></div>
+    <div class="item"><span class="num">05</span><span class="title">Forms & Interactions</span><p class="body">Implementación de formularios, CTA, estados visuales y las interacciones contempladas en el alcance.</p></div>
+    <div class="item"><span class="num">06</span><span class="title">E-commerce</span><p class="body">Integración de funcionalidades de comercio electrónico al sitio web.</p></div>
+  </div>
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span></div> -->
+  <div class="num">04 / DELIVERABLES</div>
+  <h2>Al finalizar</h2>
+  <div class="checks">
+    <div class="check"><span class="checkmark">✓</span><span class="body">Sitio web desarrollado según el diseño y contenido final aprobado.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Experiencia responsive para desktop, tablet y mobile.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Animaciones e interacciones implementadas con GSAP / ScrollTrigger.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">CMS configurado para administración de contenidos.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Formularios y CTA implementados según especificación.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">E-commerce implementado.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Sitio publicado en el entorno de producción.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Capacitación básica para administración del CMS.</span></div>
+    <div class="check"><span class="checkmark">✓</span><span class="body">Una ronda de ajustes posteriores a la entrega final.</span></div>
+  </div>
+  <!-- <div class="material">
+    <div class="mono">MATERIAL NECESARIO PARA COMENZAR</div>
+    <p class="body" style="margin:4mm 0 0">Diseño visual final · textos definitivos · fotografías · videos · renders / recursos 3D · recursos gráficos · estructura y contenidos aprobados.</p>
+    <p class="small" style="margin:4mm 0 0">La producción de fotografía, video, modelado/render 3D, redacción creativa y dirección de arte no está incluida en este presupuesto.</p>
+  </div> -->
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span></div> -->
+  <div class="num">05 / PROCESS</div>
+  <h2>Proceso de trabajo</h2>
+  <div class="process">
+    <div class="pitem"><span class="num">01</span><span class="title">SETUP</span><p class="body">Revisión del diseño, contenidos, recursos y definición técnica inicial.</p></div>
+    <div class="pitem"><span class="num">02</span><span class="title">BUILD</span><p class="body">Desarrollo de componentes, páginas, CMS e interacciones.</p></div>
+    <div class="pitem"><span class="num">03</span><span class="title">MOTION</span><p class="body">Integración y ajuste de animaciones y experiencia de scroll.</p></div>
+    <div class="pitem"><span class="num">04</span><span class="title">QA</span><p class="body">Testing responsive, corrección de errores y revisión final.</p></div>
+    <div class="pitem"><span class="num">05</span><span class="title">LAUNCH</span><p class="body">Publicación, configuración de producción y capacitación.</p></div>
+  </div>
+  <div style="margin-top:14mm">
+    <div class="num">TIMING</div>
+    <h3 style="margin-top:4mm">El calendario definitivo se establecerá una vez aprobado el alcance, recibido el material base y coordinada la fecha de inicio.</h3>
+  </div>
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span></div> -->
+  <div class="num">06 / BUDGET</div>
+  <h2>Presupuesto</h2>
+  <table class="budget">
+    <thead><tr><th>SERVICIO</th><th>VALOR</th></tr></thead>
+    <tbody>
+      <tr><td>Diseño y desarrollo</td><td>$3.361.345</td></tr>
+    </tbody>
+  </table>
+  <div class="totals">
+    <div class="total-row"><span>TOTAL NETO</span><b>$3.361.345</b></div>
+    <div class="total-row"><span>IVA 19%</span><b>$638.655</b></div>
+    <div class="total-row"><span>Gastos operacionales y eventuales tercerizaciones</span><b>$1.000.000</b></div>
+    <div class="total-row"><span>TOTAL</span><span class="grand">$5.000.000</span></div>
+  </div>
+  <p class="small" style="margin-top:8mm">Valores expresados en pesos chilenos (CLP).</p>
+  <!-- <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div> -->
+</section>
+
+<section class="page">
+  <!-- <div class="topbar"><span>MÁFICO / WEB DEVELOPMENT PROPOSAL</span><span>07</span></div> -->
+<div class="num">07 / TERMS</div>
+<h2>Condiciones del servicio</h2>
+<div class="terms">
+  <div class="term">
+    <span class="label">Forma de pago</span>
+    <p class="body">50 % al inicio del proyecto y el 50 % restante contra entrega final.</p>
+  </div>
+  <div class="term">
+    <span class="label">Inicio del proyecto</span>
+    <p class="body">El desarrollo dará comienzo una vez aprobado el presupuesto, acordada la fecha de inicio y recibido todo el material necesario por parte del cliente.</p>
+  </div>
+  <div class="term">
+    <span class="label">Cambios y ampliaciones</span>
+    <p class="body">Cualquier modificación del alcance o incorporación de nuevas funcionalidades posteriores a la aprobación será evaluada y presupuestada de forma independiente.</p>
+  </div>
+  <div class="term">
+    <span class="label">Garantía técnica</span>
+    <p class="body">Cobertura de 3 meses sobre errores de programación imputables al desarrollo entregado. No incluye modificaciones de contenido, diseño ni nuevas prestaciones.</p>
+  </div>
+</div>
+  <div class="closing">
+    <!-- <div class="num">MÁFICO</div> -->
+    <h2>Let's build it<span class="orange">.</span></h2>
+    <p class="body">Daniela Quintana · Full Stack Developer</p>
+    <p class="small">Linkedin.com/in/daniela-quintana</p>
+  </div>
+  <div class="footer"><span>DANIELA QUINTANA</span><span>2026</span></div>
+</section>
+
+<script>
+  const secciones = document.querySelectorAll('section');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  secciones.forEach(seccion => observer.observe(seccion));
+</script>
+</body>
+</html>
